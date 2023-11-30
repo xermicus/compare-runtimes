@@ -1,0 +1,20 @@
+[package]
+name = "compare-runtimes"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+evm-interpreter = { git = "https://github.com/rust-ethereum/evm.git" }
+hex = "0.4"
+primitive-types = { version = "0.12", features = ["codec"] }
+polkavm = "0.2"
+parity-scale-codec = "3.6"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "fibonacci"
+harness = false
