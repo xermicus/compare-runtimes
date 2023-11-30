@@ -10,7 +10,7 @@ pub fn fib_recursive(n: u32) -> (Vec<u8>, Vec<u8>) {
     )
 }
 
-pub fn fib_terative(n: u32) -> (Vec<u8>, Vec<u8>) {
+pub fn fib_iterative(n: u32) -> (Vec<u8>, Vec<u8>) {
     (
         include_bytes!("../../cases/FibonacciIterative.pvm").to_vec(),
         (FIB3, U256::from(n)).encode(),

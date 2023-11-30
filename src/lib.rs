@@ -32,7 +32,7 @@ mod tests {
             check(*expected, evm_code, evm_input, polkavm_code, polkavm_data);
 
             let (evm_code, evm_input) = cases::evm::fib_iterative(n);
-            let (polkavm_code, polkavm_input) = cases::polkavm::fib_terative(n);
+            let (polkavm_code, polkavm_input) = cases::polkavm::fib_iterative(n);
             check(*expected, evm_code, evm_input, polkavm_code, polkavm_input);
 
             let (evm_code, evm_input) = cases::evm::fib_binet(n);
