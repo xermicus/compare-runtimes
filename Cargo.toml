@@ -19,3 +19,8 @@ pprof = { version = "0.13", features = ["flamegraph", "criterion"] }
 [[bench]]
 name = "fibonacci"
 harness = false
+
+[profile.benchmark]
+inherits = "release"
+lto = true
+codegen-units = 1

@@ -4,6 +4,7 @@ pub mod runtimes;
 #[cfg(test)]
 mod tests {
     use parity_scale_codec::Decode;
+    use polkavm::BackendKind;
     use primitive_types::U256;
 
     use crate::*;
@@ -15,7 +16,8 @@ mod tests {
             let evm_ret = U256::from_big_endian(&runtimes::evm::execute(evm));
             assert_eq!(evm_ret.as_u32(), expected);
 
-            let (state, instance) = runtimes::polkavm::prepare(&polkavm_code, polkavm_input);
+            let (state, instance) =
+                runtimes::polkavm::prepare(&polkavm_code, polkavm_input, BackendKind::Compiler);
             let state = runtimes::polkavm::call(state, instance);
             let polkavm_ret = U256::decode(&mut &state.output.1[..]).unwrap();
 

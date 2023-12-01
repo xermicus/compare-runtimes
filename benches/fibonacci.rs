@@ -1,5 +1,6 @@
 use criterion::BenchmarkId;
 use criterion::{criterion_group, criterion_main, Criterion};
+use polkavm::BackendKind;
 use pprof::criterion::{Output, PProfProfiler};
 
 use compare_runtimes::*;
@@ -17,7 +18,17 @@ fn bench_fibonacci_recurisve(c: &mut Criterion) {
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_recursive(*n);
-        let (state, pre) = runtimes::polkavm::prepare(&pvm_code, pvm_data.clone());
+        let (state, pre) =
+            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+        group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
+            b.iter(|| {
+                runtimes::polkavm::call(state.clone(), pre.clone());
+            });
+        });
+
+        let (pvm_code, pvm_data) = cases::polkavm::fib_recursive(*n);
+        let (state, pre) =
+            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
             b.iter(|| {
                 runtimes::polkavm::call(state.clone(), pre.clone());
@@ -39,7 +50,17 @@ fn bench_fibonacci_iterative(c: &mut Criterion) {
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_iterative(*n);
-        let (state, pre) = runtimes::polkavm::prepare(&pvm_code, pvm_data.clone());
+        let (state, pre) =
+            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+        group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
+            b.iter(|| {
+                runtimes::polkavm::call(state.clone(), pre.clone());
+            });
+        });
+
+        let (pvm_code, pvm_data) = cases::polkavm::fib_iterative(*n);
+        let (state, pre) =
+            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
             b.iter(|| {
                 runtimes::polkavm::call(state.clone(), pre.clone());
@@ -61,7 +82,17 @@ fn bench_fibonacci_binet(c: &mut Criterion) {
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_binet(*n);
-        let (state, pre) = runtimes::polkavm::prepare(&pvm_code, pvm_data.clone());
+        let (state, pre) =
+            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+        group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
+            b.iter(|| {
+                runtimes::polkavm::call(state.clone(), pre.clone());
+            });
+        });
+
+        let (pvm_code, pvm_data) = cases::polkavm::fib_binet(*n);
+        let (state, pre) =
+            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
             b.iter(|| {
                 runtimes::polkavm::call(state.clone(), pre.clone());
@@ -89,11 +120,33 @@ fn bench_fibonacci_prepare(c: &mut Criterion) {
 
     let (pvm_code, pvm_data) = cases::polkavm::fib_binet(0);
     group.bench_with_input(
+        BenchmarkId::new("PolkaVMBinetInterpreter", 0),
+        &(&pvm_code, &pvm_data),
+        |b, _| {
+            b.iter(|| {
+                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+            });
+        },
+    );
+
+    let (pvm_code, pvm_data) = cases::polkavm::fib_binet(0);
+    group.bench_with_input(
         BenchmarkId::new("PolkaVMBinet", 0),
         &(&pvm_code, &pvm_data),
         |b, _| {
             b.iter(|| {
-                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone());
+                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
+            });
+        },
+    );
+
+    let (pvm_code, pvm_data) = cases::polkavm::fib_iterative(0);
+    group.bench_with_input(
+        BenchmarkId::new("PolkaVMIterativeInterpreter", 0),
+        &(&pvm_code, &pvm_data),
+        |b, _| {
+            b.iter(|| {
+                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
             });
         },
     );
@@ -104,7 +157,7 @@ fn bench_fibonacci_prepare(c: &mut Criterion) {
         &(&pvm_code, &pvm_data),
         |b, _| {
             b.iter(|| {
-                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone());
+                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
             });
         },
     );

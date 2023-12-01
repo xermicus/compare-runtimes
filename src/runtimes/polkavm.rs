@@ -1,7 +1,7 @@
 use parity_scale_codec::Encode;
 use polkavm::{
-    Caller, Config, Engine, ExecutionConfig, Gas, InstancePre, Linker, Module, ModuleConfig,
-    ProgramBlob, Trap,
+    BackendKind, Caller, Config, Engine, ExecutionConfig, Gas, GasMeteringKind, InstancePre,
+    Linker, Module, ModuleConfig, ProgramBlob, Trap,
 };
 
 #[derive(Clone, Debug)]
@@ -75,15 +75,18 @@ fn link_host_functions(engine: &Engine) -> Linker<State> {
     linker
 }
 
-pub fn prepare(code: &[u8], input: Vec<u8>) -> (State, InstancePre<State>) {
+pub fn prepare(code: &[u8], input: Vec<u8>, backend: BackendKind) -> (State, InstancePre<State>) {
     let blob = ProgramBlob::parse(code).unwrap();
 
     let mut config = Config::new();
     config.set_allow_insecure(false);
-    config.set_backend(Some(polkavm::BackendKind::Compiler));
+    config.set_backend(Some(backend));
+
     let engine = Engine::new(&config).unwrap();
+
     let mut module_config = ModuleConfig::new();
-    module_config.set_gas_metering(Some(polkavm::GasMeteringKind::Async));
+    module_config.set_gas_metering(Some(GasMeteringKind::Async));
+
     let module = Module::from_blob(&engine, &module_config, &blob).unwrap();
 
     let func = link_host_functions(&engine)
