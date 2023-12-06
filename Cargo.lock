@@ -191,18 +191,18 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.4.10"
+version = "4.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41fffed7514f420abec6d183b1d3acfd9099c79c3a10a06ade4f8203f1411272"
+checksum = "bfaff671f6b22ca62406885ece523383b9b64022e341e53e009a62ebc47a45f2"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.4.9"
+version = "4.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63361bae7eef3771745f02d8d892bec2fee5f6e34af316ba556e7f97a7069ff1"
+checksum = "a216b506622bb1d316cd51328dce24e07bdff4a6128a47c7e7fad11878d5adbb"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -385,7 +385,7 @@ dependencies = [
 [[package]]
 name = "evm-interpreter"
 version = "1.0.0-dev"
-source = "git+https://github.com/rust-ethereum/evm.git#c0f4a1d8596702b2abe7d503dc90c48be5a1846e"
+source = "git+https://github.com/rust-ethereum/evm.git#ae87a5ba3052af9539e978a28a6a8aec548f746c"
 dependencies = [
  "parity-scale-codec",
  "primitive-types",
@@ -597,9 +597,9 @@ checksum = "89d92a4743f9a61002fae18374ed11e7973f530cb3a3255fb354818118b2203c"
 
 [[package]]
 name = "linux-raw-sys"
-version = "0.4.11"
+version = "0.4.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "969488b55f8ac402214f3f5fd243ebb7206cf82de60d3172994707a4bcc2b829"
+checksum = "c4cd1a83af159aa67994778be9070f0ae1bd732942279cabb14f86f986a21456"
 
 [[package]]
 name = "lock_api"
@@ -721,7 +721,7 @@ version = "3.6.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be30eaf4b0a9fba5336683b38de57bb86d179a35862ba6bfcf57625d006bde5b"
 dependencies = [
- "proc-macro-crate 2.0.0",
+ "proc-macro-crate 2.0.1",
  "proc-macro2",
  "quote",
  "syn 1.0.109",
@@ -780,9 +780,8 @@ dependencies = [
 
 [[package]]
 name = "polkavm"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94a1138e7d61d9b1fbd863516e5f4a28314062b91f6658688c9b556fb052ec44"
+version = "0.3.0"
+source = "git+https://github.com/koute/polkavm.git#6b87f6dc886c42b254c701d6fa83ada560193996"
 dependencies = [
  "libc",
  "log",
@@ -793,27 +792,24 @@ dependencies = [
 
 [[package]]
 name = "polkavm-assembler"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "483981f7512b728dad2a673b40b95c0575b7f3ccd4be0ef5aa5f0fcb8e368441"
+version = "0.3.0"
+source = "git+https://github.com/koute/polkavm.git#6b87f6dc886c42b254c701d6fa83ada560193996"
 dependencies = [
  "log",
 ]
 
 [[package]]
 name = "polkavm-common"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01363cf0a778e8d93eff31e8a03bc59992cba35faa419ea4f3e80146b69195ba"
+version = "0.3.0"
+source = "git+https://github.com/koute/polkavm.git#6b87f6dc886c42b254c701d6fa83ada560193996"
 dependencies = [
  "log",
 ]
 
 [[package]]
 name = "polkavm-linux-raw"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fac5badef18a936157dd1f5c8d7e6b42ebdc7036f41809df2aa7fa42f71995ad"
+version = "0.3.0"
+source = "git+https://github.com/koute/polkavm.git#6b87f6dc886c42b254c701d6fa83ada560193996"
 
 [[package]]
 name = "pprof"
@@ -867,11 +863,12 @@ dependencies = [
 
 [[package]]
 name = "proc-macro-crate"
-version = "2.0.0"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7e8366a6159044a37876a2b9817124296703c586a5c92e2c53751fa06d8d43e8"
+checksum = "97dc5fea232fc28d2f597b37c4876b348a40e33f3b02cc975c8d006d78d94b1a"
 dependencies = [
- "toml_edit 0.20.7",
+ "toml_datetime",
+ "toml_edit 0.20.2",
 ]
 
 [[package]]
@@ -997,9 +994,9 @@ checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
 
 [[package]]
 name = "rgb"
-version = "0.8.36"
+version = "0.8.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "20ec2d3e3fc7a92ced357df9cebd5a10b6fb2aa1ee797bf7e9ce2f17dffc8f59"
+checksum = "05aaa8004b64fd573fc9d002f4e632d51ad4f026c2b5ba95fcb6c2f32c2c47d8"
 dependencies = [
  "bytemuck",
 ]
@@ -1028,15 +1025,15 @@ checksum = "3e75f6a532d0fd9f7f13144f392b6ad56a32696bfcd9c78f797f16bbb6f072d6"
 
 [[package]]
 name = "rustix"
-version = "0.38.25"
+version = "0.38.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc99bc2d4f1fed22595588a013687477aedf3cdcfb26558c559edb67b4d9b22e"
+checksum = "9470c4bf8246c8daf25f9598dca807fb6510347b1e1cfa55749113850c79d88a"
 dependencies = [
  "bitflags 2.4.1",
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.48.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -1152,9 +1149,9 @@ checksum = "9091b6114800a5f2141aee1d1b9d6ca3592ac062dc5decb3764ec5895a47b4eb"
 
 [[package]]
 name = "symbolic-common"
-version = "12.7.1"
+version = "12.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ba238da6058509cda85e388e8bf1caf522894ec38da490de9694fab9238c715"
+checksum = "1cccfffbc6bb3bb2d3a26cd2077f4d055f6808d266f9d4d158797a4c60510dfe"
 dependencies = [
  "debugid",
  "memmap2",
@@ -1164,9 +1161,9 @@ dependencies = [
 
 [[package]]
 name = "symbolic-demangle"
-version = "12.7.1"
+version = "12.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b7f36fed2b0d1f3db882e5edb9d1b6595dd8cc095f52f265b17291f09062b70"
+checksum = "76a99812da4020a67e76c4eb41f08c87364c14170495ff780f30dd519c221a68"
 dependencies = [
  "cpp_demangle",
  "rustc-demangle",
@@ -1246,9 +1243,9 @@ dependencies = [
 
 [[package]]
 name = "toml_datetime"
-version = "0.6.5"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3550f4e9685620ac18a50ed434eb3aec30db8ba93b0287467bca5826ea25baf1"
+checksum = "7cda73e2f1397b1262d6dfdcef8aafae14d1de7748d66822d3bfeeb6d03e5e4b"
 
 [[package]]
 name = "toml_edit"
@@ -1263,9 +1260,9 @@ dependencies = [
 
 [[package]]
 name = "toml_edit"
-version = "0.20.7"
+version = "0.20.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70f427fce4d84c72b5b732388bf4a9f4531b53f74e2887e3ecb2481f68f66d81"
+checksum = "396e4d48bbb2b7554c944bde63101b5ae446cff6ec4a24227428f15eb72ef338"
 dependencies = [
  "indexmap",
  "toml_datetime",
@@ -1553,9 +1550,9 @@ checksum = "dff9641d1cd4be8d1a070daf9e3773c5f67e78b4d9d42263020c057706765c04"
 
 [[package]]
 name = "winnow"
-version = "0.5.19"
+version = "0.5.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "829846f3e3db426d4cee4510841b71a8e58aa2a76b1132579487ae430ccd9c7b"
+checksum = "b7e87b8dfbe3baffbe687eef2e164e32286eff31a5ee16463ce03d991643ec94"
 dependencies = [
  "memchr",
 ]
@@ -1571,18 +1568,18 @@ dependencies = [
 
 [[package]]
 name = "zerocopy"
-version = "0.7.26"
+version = "0.7.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e97e415490559a91254a2979b4829267a57d2fcd741a98eee8b722fb57289aa0"
+checksum = "5d075cf85bbb114e933343e087b92f2146bac0d55b534cbb8188becf0039948e"
 dependencies = [
  "zerocopy-derive",
 ]
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.7.26"
+version = "0.7.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd7e48ccf166952882ca8bd778a43502c64f33bf94c12ebe2a7f08e5a0f6689f"
+checksum = "86cd5ca076997b97ef09d3ad65efe811fa68c9e874cb636ccb211223a813b0c2"
 dependencies = [
  "proc-macro2",
  "quote",

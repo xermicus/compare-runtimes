@@ -1,10 +1,12 @@
 use evm_interpreter::{
-    Context, Etable, ExitError, Log, Machine, Opcode, RuntimeBackend, RuntimeBaseBackend,
-    RuntimeEnvironment, RuntimeState, TransactionContext,
+    interpreter::EtableInterpreter, interpreter::RunInterpreter, trap::CallCreateTrap, Context,
+    Etable, ExitError, Log, Machine, RuntimeBackend, RuntimeBaseBackend, RuntimeEnvironment,
+    RuntimeState, TransactionContext,
 };
 use primitive_types::{H160, H256, U256};
 
-static RUNTIME_ETABLE: Etable<RuntimeState, UnimplementedHandler, Opcode> = Etable::runtime();
+static RUNTIME_ETABLE: Etable<RuntimeState, UnimplementedHandler, CallCreateTrap> =
+    Etable::runtime();
 
 pub struct UnimplementedHandler;
 
@@ -126,16 +128,16 @@ pub fn prepare(code: Vec<u8>, data: Vec<u8>) -> Machine<RuntimeState> {
         }
         .into(),
         retbuf: Vec::new(),
-        gas: U256::zero(),
     };
     evm_interpreter::Machine::new(code.into(), data.to_vec().into(), 1024, 0xFFFF, state)
 }
 
-pub fn execute(mut vm: Machine<RuntimeState>) -> Vec<u8> {
-    vm.run(&mut UnimplementedHandler {}, &RUNTIME_ETABLE)
+pub fn execute(vm: Machine<RuntimeState>) -> Vec<u8> {
+    let mut vm = EtableInterpreter::new(vm, &RUNTIME_ETABLE);
+    vm.run(&mut UnimplementedHandler {})
         .exit()
         .unwrap()
         .unwrap();
 
-    vm.retval
+    vm.retval.clone()
 }
