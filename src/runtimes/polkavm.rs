@@ -110,7 +110,7 @@ pub fn call(mut state: State, on: InstancePre<State>) -> State {
         .unwrap()
         .get_func("call")
         .unwrap()
-        .call_ex(&mut state, &[], config)
+        .call_ex(&mut state, &[], &mut [], config)
         .unwrap_err();
 
     state

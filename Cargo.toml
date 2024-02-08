@@ -9,7 +9,7 @@ edition = "2021"
 evm-interpreter = { git = "https://github.com/rust-ethereum/evm.git" }
 hex = "0.4"
 primitive-types = { version = "0.12", features = ["codec"] }
-polkavm = "0.2"
+polkavm = "0.8"
 parity-scale-codec = "3.6"
 
 [dev-dependencies]
