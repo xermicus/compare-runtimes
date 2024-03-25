@@ -1,7 +1,16 @@
-use parity_scale_codec::Encode;
-use primitive_types::U256;
+pub fn odd_product(n: u32) -> (Vec<u8>, Vec<u8>) {
+    (
+        include_bytes!("../../cases/Computation.pvm").to_vec(),
+        super::evm::odd_product(n).1,
+    )
+}
 
-use super::{BASELINE, FIB3};
+pub fn triangle_number(n: i64) -> (Vec<u8>, Vec<u8>) {
+    (
+        include_bytes!("../../cases/Computation.pvm").to_vec(),
+        super::evm::triangle_number(n).1,
+    )
+}
 
 pub fn fib_recursive(n: u32) -> (Vec<u8>, Vec<u8>) {
     (

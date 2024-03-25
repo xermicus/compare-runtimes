@@ -3,6 +3,7 @@ pub mod runtimes;
 
 #[cfg(test)]
 mod tests {
+    use alloy_primitives::I256;
     use polkavm::BackendKind;
     use primitive_types::U256;
 
@@ -24,6 +25,58 @@ mod tests {
         let state = revive_integration::mock_runtime::call(state, &pre, export);
         assert_eq!(state.output.flags, 0);
         assert_eq!(state.output.data, Vec::<u8>::new());
+    }
+
+    #[test]
+    fn odd_product_works() {
+        let parameter = 2_000_000;
+        let expected = -1_335_316_246_127_320_831_i64;
+
+        let (evm_code, evm_input) = cases::evm::odd_product(parameter);
+        let (polkavm_code, polkavm_input) = cases::polkavm::odd_product(parameter);
+
+        let evm = runtimes::evm::prepare(evm_code, evm_input);
+        let evm_ret = U256::from_big_endian(&runtimes::evm::execute(evm));
+
+        let (state, pre, export) = runtimes::polkavm::prepare_pvm(
+            &polkavm_code[..],
+            &polkavm_input[..],
+            BackendKind::Compiler,
+        );
+        let state = revive_integration::mock_runtime::call(state, &pre, export);
+        let polkavm_ret = U256::from_big_endian(&mut &state.output.data[..]);
+
+        assert_eq!(polkavm_ret, evm_ret);
+        assert_eq!(
+            expected,
+            I256::from_be_bytes::<32>(state.output.data.try_into().unwrap()).as_i64()
+        )
+    }
+
+    #[test]
+    fn triangle_number_works() {
+        let parameter = 3_000_000;
+        let expected = 4_500_001_500_000i64;
+
+        let (evm_code, evm_input) = cases::evm::triangle_number(parameter);
+        let (polkavm_code, polkavm_input) = cases::polkavm::triangle_number(parameter);
+
+        let evm = runtimes::evm::prepare(evm_code, evm_input);
+        let evm_ret = U256::from_big_endian(&runtimes::evm::execute(evm));
+
+        let (state, pre, export) = runtimes::polkavm::prepare_pvm(
+            &polkavm_code[..],
+            &polkavm_input[..],
+            BackendKind::Interpreter,
+        );
+        let state = revive_integration::mock_runtime::call(state, &pre, export);
+        let polkavm_ret = U256::from_big_endian(&mut &state.output.data[..]);
+
+        assert_eq!(polkavm_ret, evm_ret);
+        assert_eq!(
+            expected,
+            I256::from_be_bytes::<32>(state.output.data.try_into().unwrap()).as_i64()
+        )
     }
 
     #[test]

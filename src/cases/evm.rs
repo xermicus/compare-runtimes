@@ -1,7 +1,25 @@
 use parity_scale_codec::Encode;
 use primitive_types::U256;
 
-use super::{BASELINE, FIB3};
+use super::{BASELINE, FIB3, ODD_PRODUCT, TRIANGLE_NUMBER};
+
+pub fn odd_product(n: u32) -> (Vec<u8>, Vec<u8>) {
+    let mut buf = [0; 32];
+    U256::from(n).to_big_endian(&mut buf);
+    (
+        hex::decode(include_str!("../../cases/Computation.bin-runtime")).unwrap(),
+        (ODD_PRODUCT, buf).encode(),
+    )
+}
+
+pub fn triangle_number(n: i64) -> (Vec<u8>, Vec<u8>) {
+    let mut buf = [0; 32];
+    U256::from(n).to_big_endian(&mut buf);
+    (
+        hex::decode(include_str!("../../cases/Computation.bin-runtime")).unwrap(),
+        (TRIANGLE_NUMBER, buf).encode(),
+    )
+}
 
 pub fn fib_recursive(n: u32) -> (Vec<u8>, Vec<u8>) {
     let mut buf = [0; 32];

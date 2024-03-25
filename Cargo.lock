@@ -445,6 +445,7 @@ dependencies = [
 name = "compare-runtimes"
 version = "0.1.0"
 dependencies = [
+ "alloy-primitives",
  "criterion",
  "evm-interpreter",
  "hex",
