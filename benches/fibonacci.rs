@@ -18,20 +18,20 @@ fn bench_fibonacci_recurisve(c: &mut Criterion) {
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_recursive(*n);
-        let (state, pre) =
-            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
         group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
             b.iter(|| {
-                runtimes::polkavm::call(state.clone(), pre.clone());
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
             });
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_recursive(*n);
-        let (state, pre) =
-            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
             b.iter(|| {
-                runtimes::polkavm::call(state.clone(), pre.clone());
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
             });
         });
     }
@@ -50,20 +50,20 @@ fn bench_fibonacci_iterative(c: &mut Criterion) {
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_iterative(*n);
-        let (state, pre) =
-            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
         group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
             b.iter(|| {
-                runtimes::polkavm::call(state.clone(), pre.clone());
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
             });
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_iterative(*n);
-        let (state, pre) =
-            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
             b.iter(|| {
-                runtimes::polkavm::call(state.clone(), pre.clone());
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
             });
         });
     }
@@ -82,20 +82,20 @@ fn bench_fibonacci_binet(c: &mut Criterion) {
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_binet(*n);
-        let (state, pre) =
-            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
         group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
             b.iter(|| {
-                runtimes::polkavm::call(state.clone(), pre.clone());
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
             });
         });
 
         let (pvm_code, pvm_data) = cases::polkavm::fib_binet(*n);
-        let (state, pre) =
-            runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
             b.iter(|| {
-                runtimes::polkavm::call(state.clone(), pre.clone());
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
             });
         });
     }
@@ -124,7 +124,7 @@ fn bench_fibonacci_prepare(c: &mut Criterion) {
         &(&pvm_code, &pvm_data),
         |b, _| {
             b.iter(|| {
-                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+                runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
             });
         },
     );
@@ -135,7 +135,7 @@ fn bench_fibonacci_prepare(c: &mut Criterion) {
         &(&pvm_code, &pvm_data),
         |b, _| {
             b.iter(|| {
-                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
+                runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
             });
         },
     );
@@ -146,7 +146,7 @@ fn bench_fibonacci_prepare(c: &mut Criterion) {
         &(&pvm_code, &pvm_data),
         |b, _| {
             b.iter(|| {
-                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Interpreter);
+                runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
             });
         },
     );
@@ -157,16 +157,47 @@ fn bench_fibonacci_prepare(c: &mut Criterion) {
         &(&pvm_code, &pvm_data),
         |b, _| {
             b.iter(|| {
-                runtimes::polkavm::prepare(&pvm_code, pvm_data.clone(), BackendKind::Compiler);
+                runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
             });
         },
     );
 }
 
+fn bench_baseline(c: &mut Criterion) {
+    let mut group = c.benchmark_group("Baseline");
+
+    let (evm_code, evm_data) = cases::evm::baseline();
+    group.bench_function("EVM", |b| {
+        b.iter(|| {
+            let vm = runtimes::evm::prepare(evm_code.clone(), evm_data.clone());
+            runtimes::evm::execute(vm);
+        })
+    });
+
+    let (pvm_code, pvm_data) = cases::polkavm::baseline();
+    let (state, pre, export) =
+        runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
+    group.bench_function("PolkaVMInterpreter", |b| {
+        b.iter(|| {
+            revive_integration::mock_runtime::call(state.clone(), &pre, export);
+        })
+    });
+
+    let (pvm_code, pvm_data) = cases::polkavm::baseline();
+    let (state, pre, export) =
+        runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
+    group.bench_function("PolkaVM", |b| {
+        b.iter(|| {
+            revive_integration::mock_runtime::call(state.clone(), &pre, export);
+        })
+    });
+}
+
 criterion_group!(
     name = benches;
     config = Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
-    targets = bench_fibonacci_recurisve,
+    targets = bench_baseline,
+    bench_fibonacci_recurisve,
     bench_fibonacci_iterative,
     bench_fibonacci_binet,
     bench_fibonacci_prepare

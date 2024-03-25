@@ -9,8 +9,10 @@ edition = "2021"
 evm-interpreter = { git = "https://github.com/rust-ethereum/evm.git" }
 hex = "0.4"
 primitive-types = { version = "0.12", features = ["codec"] }
-polkavm = "0.8"
+polkavm = { git = "https://github.com/koute/polkavm.git" } 
 parity-scale-codec = "3.6"
+revive-integration = { path = "../revive/crates/integration/" }
+#revive-integration = { git = "https://github.com/xermicus/revive" }
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }

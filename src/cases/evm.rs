@@ -1,7 +1,7 @@
 use parity_scale_codec::Encode;
 use primitive_types::U256;
 
-use super::FIB3;
+use super::{BASELINE, FIB3};
 
 pub fn fib_recursive(n: u32) -> (Vec<u8>, Vec<u8>) {
     let mut buf = [0; 32];
@@ -27,5 +27,12 @@ pub fn fib_binet(n: u32) -> (Vec<u8>, Vec<u8>) {
     (
         hex::decode(include_str!("../../cases/FibonacciBinet.bin-runtime")).unwrap(),
         (FIB3, buf).encode(),
+    )
+}
+
+pub fn baseline() -> (Vec<u8>, Vec<u8>) {
+    (
+        hex::decode(include_str!("../../cases/Baseline.bin-runtime")).unwrap(),
+        BASELINE.encode(),
     )
 }
