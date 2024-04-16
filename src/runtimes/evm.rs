@@ -1,7 +1,8 @@
 use evm_interpreter::{
-    interpreter::EtableInterpreter, interpreter::RunInterpreter, trap::CallCreateTrap, Context,
-    Etable, ExitError, Log, Machine, RuntimeBackend, RuntimeBaseBackend, RuntimeEnvironment,
-    RuntimeState, TransactionContext,
+    interpreter::{EtableInterpreter, RunInterpreter},
+    trap::CallCreateTrap,
+    Context, Etable, ExitError, Log, Machine, RuntimeBackend, RuntimeBaseBackend,
+    RuntimeEnvironment, RuntimeState, TransactionContext, Valids,
 };
 use primitive_types::{H160, H256, U256};
 
@@ -115,10 +116,13 @@ impl RuntimeBackend for UnimplementedHandler {
     }
 }
 
-pub fn prepare<'a>(
-    code: Vec<u8>,
-    data: Vec<u8>,
-) -> EtableInterpreter<'a, Etable<RuntimeState, UnimplementedHandler, CallCreateTrap>> {
+#[derive(Clone)]
+pub struct PreparedEvm {
+    pub valids: Valids,
+    pub vm: Machine<RuntimeState>,
+}
+
+pub fn prepare(code: Vec<u8>, data: Vec<u8>) -> PreparedEvm {
     let state = RuntimeState {
         context: Context {
             address: H160::default(),
@@ -132,14 +136,15 @@ pub fn prepare<'a>(
         .into(),
         retbuf: Vec::new(),
     };
-    let vm = evm_interpreter::Machine::new(code.into(), data.to_vec().into(), 1024, 0xFFFF, state);
-    EtableInterpreter::new(vm, &RUNTIME_ETABLE)
+
+    PreparedEvm {
+        valids: Valids::new(&code[..]),
+        vm: evm_interpreter::Machine::new(code.into(), data.to_vec().into(), 1024, 0xFFFF, state),
+    }
 }
 
-pub fn execute(
-    mut vm: EtableInterpreter<'_, Etable<RuntimeState, UnimplementedHandler, CallCreateTrap>>,
-) -> Vec<u8> {
-    //let mut vm = EtableInterpreter::new(vm, &RUNTIME_ETABLE);
+pub fn execute(pre: PreparedEvm) -> Vec<u8> {
+    let mut vm = EtableInterpreter::new_valid(pre.vm, &RUNTIME_ETABLE, pre.valids);
     vm.run(&mut UnimplementedHandler {})
         .exit()
         .unwrap()

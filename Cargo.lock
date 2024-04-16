@@ -771,7 +771,7 @@ dependencies = [
 [[package]]
 name = "evm-interpreter"
 version = "1.0.0-dev"
-source = "git+https://github.com/rust-ethereum/evm.git#f7a23df6c478ca6a151af5f60e62944800529a61"
+source = "git+https://github.com/xermicus/evm.git?branch=separate-compilation#22eeec829518be3187c37b9c8fd59523130a652a"
 dependencies = [
  "auto_impl",
  "parity-scale-codec",
