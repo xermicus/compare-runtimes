@@ -13,7 +13,7 @@ fn bench_odd_product(c: &mut Criterion) {
         .sample_size(10)
         .measurement_time(Duration::from_secs(60));
 
-    for n in [2_000_000u32, 4_000_000, 8_000_000].iter() {
+    for n in [2_000_000u32, 4_000_000, 8_000_000, 120_000_000].iter() {
         let (evm_code, evm_data) = cases::evm::odd_product(*n);
         group.bench_with_input(BenchmarkId::new("EVM", n), n, move |b, _| {
             b.iter(|| {
@@ -48,7 +48,7 @@ fn bench_triangle_number(c: &mut Criterion) {
         .sample_size(10)
         .measurement_time(Duration::from_secs(60));
 
-    for n in [3_000_000i64, 6_000_000, 12_000_000].iter() {
+    for n in [3_000_000i64, 6_000_000, 12_000_000, 180_000_000].iter() {
         let (evm_code, evm_data) = cases::evm::triangle_number(*n);
         group.bench_with_input(BenchmarkId::new("EVM", n), n, move |b, _| {
             b.iter(|| {
@@ -173,6 +173,38 @@ fn bench_fibonacci_binet(c: &mut Criterion) {
     }
 }
 
+fn bench_fibonacci_iterative_unchecked(c: &mut Criterion) {
+    let mut group = c.benchmark_group("FibonacciIterativeUnchecked");
+
+    for n in [32, 64, 128, 256, 4096, 300_000, 38_400_000].iter() {
+        let (evm_code, evm_data) = cases::evm::fib_iterative_unchecked(*n);
+        group.bench_with_input(BenchmarkId::new("EVM", n), n, move |b, _| {
+            b.iter(|| {
+                let vm = runtimes::evm::prepare(evm_code.clone(), evm_data.clone());
+                runtimes::evm::execute(vm);
+            })
+        });
+
+        let (pvm_code, pvm_data) = cases::polkavm::fib_iterative_unchecked(*n);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
+        group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", n), n, |b, _| {
+            b.iter(|| {
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
+            });
+        });
+
+        let (pvm_code, pvm_data) = cases::polkavm::fib_iterative_unchecked(*n);
+        let (state, pre, export) =
+            runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
+        group.bench_with_input(BenchmarkId::new("PolkaVM", n), n, |b, _| {
+            b.iter(|| {
+                revive_integration::mock_runtime::call(state.clone(), &pre, export);
+            });
+        });
+    }
+}
+
 fn bench_fibonacci_prepare(c: &mut Criterion) {
     let mut group = c.benchmark_group("FibonacciPrepare");
 
@@ -273,6 +305,7 @@ criterion_group!(
     bench_triangle_number,
     bench_fibonacci_recurisve,
     bench_fibonacci_iterative,
+    bench_fibonacci_iterative_unchecked,
     bench_fibonacci_binet,
     bench_fibonacci_prepare
 );

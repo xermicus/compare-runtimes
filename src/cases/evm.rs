@@ -39,6 +39,18 @@ pub fn fib_iterative(n: u32) -> (Vec<u8>, Vec<u8>) {
     )
 }
 
+pub fn fib_iterative_unchecked(n: u32) -> (Vec<u8>, Vec<u8>) {
+    let mut buf = [0; 32];
+    U256::from(n).to_big_endian(&mut buf);
+    (
+        hex::decode(include_str!(
+            "../../cases/FibonacciIterativeUnchecked.bin-runtime"
+        ))
+        .unwrap(),
+        (FIB3, buf).encode(),
+    )
+}
+
 pub fn fib_binet(n: u32) -> (Vec<u8>, Vec<u8>) {
     let mut buf = [0; 32];
     U256::from(n).to_big_endian(&mut buf);

@@ -26,6 +26,13 @@ pub fn fib_iterative(n: u32) -> (Vec<u8>, Vec<u8>) {
     )
 }
 
+pub fn fib_iterative_unchecked(n: u32) -> (Vec<u8>, Vec<u8>) {
+    (
+        include_bytes!("../../cases/FibonacciIterativeUnchecked.pvm").to_vec(),
+        super::evm::fib_iterative_unchecked(n).1,
+    )
+}
+
 pub fn fib_binet(n: u32) -> (Vec<u8>, Vec<u8>) {
     (
         include_bytes!("../../cases/FibonacciBinet.pvm").to_vec(),
