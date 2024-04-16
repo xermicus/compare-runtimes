@@ -11,12 +11,12 @@ fn bench(
 ) {
     let mut group = c.benchmark_group(group_name);
 
-    group.bench_with_input(BenchmarkId::new("Evm", 0), &input_evm, |b, (code, data)| {
+    group.bench_with_input(BenchmarkId::new("PrepareEvm", 0), &input_evm, |b, (code, data)| {
         b.iter(|| runtimes::evm::prepare(code.clone(), data.clone()))
     });
 
     group.bench_with_input(
-        BenchmarkId::new("PolkaVMInterpreter", 0),
+        BenchmarkId::new("PreparePolkaVMInterpreter", 0),
         &input_pvm,
         |b, (code, data)| {
             b.iter(|| {
@@ -26,7 +26,7 @@ fn bench(
     );
 
     group.bench_with_input(
-        BenchmarkId::new("PolkaVM", 0),
+        BenchmarkId::new("PreparePolkaVM", 0),
         &input_pvm,
         |b, (code, data)| {
             b.iter(|| {
