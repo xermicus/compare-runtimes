@@ -11,8 +11,7 @@ hex = "0.4"
 primitive-types = { version = "0.12", features = ["codec"] }
 polkavm = { git = "https://github.com/koute/polkavm.git" } 
 parity-scale-codec = "3.6"
-revive-integration = { path = "../revive/crates/integration/" }
-#revive-integration = { git = "https://github.com/xermicus/revive" }
+revive-integration = { git = "https://github.com/xermicus/revive" }
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }

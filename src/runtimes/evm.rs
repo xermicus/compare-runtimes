@@ -115,7 +115,10 @@ impl RuntimeBackend for UnimplementedHandler {
     }
 }
 
-pub fn prepare(code: Vec<u8>, data: Vec<u8>) -> Machine<RuntimeState> {
+pub fn prepare<'a>(
+    code: Vec<u8>,
+    data: Vec<u8>,
+) -> EtableInterpreter<'a, Etable<RuntimeState, UnimplementedHandler, CallCreateTrap>> {
     let state = RuntimeState {
         context: Context {
             address: H160::default(),
@@ -129,11 +132,14 @@ pub fn prepare(code: Vec<u8>, data: Vec<u8>) -> Machine<RuntimeState> {
         .into(),
         retbuf: Vec::new(),
     };
-    evm_interpreter::Machine::new(code.into(), data.to_vec().into(), 1024, 0xFFFF, state)
+    let vm = evm_interpreter::Machine::new(code.into(), data.to_vec().into(), 1024, 0xFFFF, state);
+    EtableInterpreter::new(vm, &RUNTIME_ETABLE)
 }
 
-pub fn execute(vm: Machine<RuntimeState>) -> Vec<u8> {
-    let mut vm = EtableInterpreter::new(vm, &RUNTIME_ETABLE);
+pub fn execute(
+    mut vm: EtableInterpreter<'_, Etable<RuntimeState, UnimplementedHandler, CallCreateTrap>>,
+) -> Vec<u8> {
+    //let mut vm = EtableInterpreter::new(vm, &RUNTIME_ETABLE);
     vm.run(&mut UnimplementedHandler {})
         .exit()
         .unwrap()
