@@ -40,6 +40,13 @@ pub fn fib_binet(n: u32) -> (Vec<u8>, Vec<u8>) {
     )
 }
 
+pub fn erc20() -> (Vec<u8>, Vec<u8>) {
+    (
+        include_bytes!("../../cases/ERC20.pvm").to_vec(),
+        super::evm::erc20().1,
+    )
+}
+
 pub fn baseline() -> (Vec<u8>, Vec<u8>) {
     (
         include_bytes!("../../cases/Baseline.pvm").to_vec(),

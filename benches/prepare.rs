@@ -1,6 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use polkavm::BackendKind;
-use pprof::criterion::{Output, PProfProfiler};
 
 use compare_runtimes::*;
 
@@ -100,15 +99,20 @@ fn bench_fibonacci_binet(c: &mut Criterion) {
     );
 }
 
+fn bench_erc20(c: &mut Criterion) {
+    bench(c, "ERC20", cases::evm::erc20(), cases::polkavm::erc20());
+}
+
 criterion_group!(
     name = prepare;
-    config = Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
+    config = Criterion::default();
     targets = bench_baseline,
     bench_odd_product,
     bench_triangle_number,
     bench_fibonacci_recursive,
     bench_fibonacci_iterative,
     bench_fibonacci_iterative_unchecked,
-    bench_fibonacci_binet
+    bench_fibonacci_binet,
+    bench_erc20
 );
 criterion_main!(prepare);

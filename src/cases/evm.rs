@@ -60,6 +60,14 @@ pub fn fib_binet(n: u32) -> (Vec<u8>, Vec<u8>) {
     )
 }
 
+pub fn erc20() -> (Vec<u8>, Vec<u8>) {
+    let buf = [0; 32];
+    (
+        hex::decode(include_str!("../../cases/ERC20.bin-runtime")).unwrap(),
+        (FIB3, buf).encode(),
+    )
+}
+
 pub fn baseline() -> (Vec<u8>, Vec<u8>) {
     (
         hex::decode(include_str!("../../cases/Baseline.bin-runtime")).unwrap(),

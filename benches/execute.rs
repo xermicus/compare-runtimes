@@ -5,7 +5,6 @@ use criterion::{
     Criterion,
 };
 use polkavm::BackendKind;
-use pprof::criterion::{Output, PProfProfiler};
 
 use compare_runtimes::*;
 
@@ -125,8 +124,8 @@ fn bench_baseline(c: &mut Criterion) {
 }
 
 criterion_group!(
-    name = runtime;
-    config = Criterion::default().with_profiler(PProfProfiler::new(100, Output::Flamegraph(None)));
+    name = execute;
+    config = Criterion::default();
     targets = bench_baseline,
     bench_odd_product,
     bench_triangle_number,
@@ -135,4 +134,4 @@ criterion_group!(
     bench_fibonacci_iterative_unchecked,
     bench_fibonacci_binet
 );
-criterion_main!(runtime);
+criterion_main!(execute);

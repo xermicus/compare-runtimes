@@ -15,11 +15,10 @@ revive-integration = { git = "https://github.com/xermicus/revive" }
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
-pprof = { version = "0.13", features = ["flamegraph", "criterion"] }
 alloy-primitives = "0.6"
 
 [[bench]]
-name = "runtime"
+name = "execute"
 harness = false
 
 [[bench]]
