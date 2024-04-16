@@ -17,12 +17,12 @@ mod tests {
         let evm = runtimes::evm::prepare(evm_code, evm_input.clone());
         assert_eq!(runtimes::evm::execute(evm), Vec::<u8>::new());
 
-        let (state, pre, export) = runtimes::polkavm::prepare_pvm(
+        let (state, mut instance, export) = runtimes::polkavm::prepare_pvm(
             &polkavm_code[..],
             &polkavm_input[..],
             BackendKind::Interpreter,
         );
-        let state = revive_integration::mock_runtime::call(state, &pre, export);
+        let state = revive_integration::mock_runtime::call(state, &mut instance, export);
         assert_eq!(state.output.flags, 0);
         assert_eq!(state.output.data, Vec::<u8>::new());
     }
@@ -38,12 +38,12 @@ mod tests {
         let evm = runtimes::evm::prepare(evm_code, evm_input);
         let evm_ret = U256::from_big_endian(&runtimes::evm::execute(evm));
 
-        let (state, pre, export) = runtimes::polkavm::prepare_pvm(
+        let (state, mut instance, export) = runtimes::polkavm::prepare_pvm(
             &polkavm_code[..],
             &polkavm_input[..],
             BackendKind::Compiler,
         );
-        let state = revive_integration::mock_runtime::call(state, &pre, export);
+        let state = revive_integration::mock_runtime::call(state, &mut instance, export);
         let polkavm_ret = U256::from_big_endian(&mut &state.output.data[..]);
 
         assert_eq!(polkavm_ret, evm_ret);
@@ -64,12 +64,12 @@ mod tests {
         let evm = runtimes::evm::prepare(evm_code, evm_input);
         let evm_ret = U256::from_big_endian(&runtimes::evm::execute(evm));
 
-        let (state, pre, export) = runtimes::polkavm::prepare_pvm(
+        let (state, mut instance, export) = runtimes::polkavm::prepare_pvm(
             &polkavm_code[..],
             &polkavm_input[..],
             BackendKind::Interpreter,
         );
-        let state = revive_integration::mock_runtime::call(state, &pre, export);
+        let state = revive_integration::mock_runtime::call(state, &mut instance, export);
         let polkavm_ret = U256::from_big_endian(&mut &state.output.data[..]);
 
         assert_eq!(polkavm_ret, evm_ret);
@@ -87,12 +87,12 @@ mod tests {
                 let evm_ret = U256::from_big_endian(&runtimes::evm::execute(evm));
                 assert_eq!(evm_ret.as_u32(), expected);
 
-                let (state, pre, export) = runtimes::polkavm::prepare_pvm(
+                let (state, mut instance, export) = runtimes::polkavm::prepare_pvm(
                     &polkavm_code[..],
                     &polkavm_input[..],
                     BackendKind::Interpreter,
                 );
-                let state = revive_integration::mock_runtime::call(state, &pre, export);
+                let state = revive_integration::mock_runtime::call(state, &mut instance, export);
                 let polkavm_ret = U256::from_big_endian(&mut &state.output.data[..]);
 
                 assert_eq!(polkavm_ret, evm_ret);

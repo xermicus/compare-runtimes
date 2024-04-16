@@ -29,20 +29,20 @@ fn bench<'a, P, I, J, M>(
         });
 
         let (pvm_code, pvm_data) = input_pvm(*p);
-        let (state, pre, export) =
+        let (state, mut instance, export) =
             runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Interpreter);
         group.bench_with_input(BenchmarkId::new("PolkaVMInterpreter", p), p, |b, _| {
             b.iter(|| {
-                revive_integration::mock_runtime::call(state.clone(), &pre, export);
+                revive_integration::mock_runtime::call(state.clone(), &mut instance, export);
             });
         });
 
         let (pvm_code, pvm_data) = input_pvm(*p);
-        let (state, pre, export) =
+        let (state, mut instance, export) =
             runtimes::polkavm::prepare_pvm(&pvm_code, &pvm_data, BackendKind::Compiler);
         group.bench_with_input(BenchmarkId::new("PolkaVM", p), p, |b, _| {
             b.iter(|| {
-                revive_integration::mock_runtime::call(state.clone(), &pre, export);
+                revive_integration::mock_runtime::call(state.clone(), &mut instance, export);
             });
         });
     }
@@ -101,18 +101,18 @@ fn bench_fibonacci_binet(c: &mut Criterion) {
     );
 }
 
-fn bench_fibonacci_iterative_unchecked(c: &mut Criterion) {
-    let mut group = c.benchmark_group("FibonacciIterativeUnchecked");
-    group
-        .sample_size(10)
-        .measurement_time(Duration::from_secs(60));
-    bench(
-        group,
-        &[32, 64, 128, 256, 4096, 50_400_000],
-        |p| cases::evm::fib_iterative_unchecked(p),
-        |p| cases::polkavm::fib_iterative_unchecked(p),
-    );
-}
+//fn bench_fibonacci_iterative_unchecked(c: &mut Criterion) {
+//    let mut group = c.benchmark_group("FibonacciIterativeUnchecked");
+//    group
+//        .sample_size(10)
+//        .measurement_time(Duration::from_secs(60));
+//    bench(
+//        group,
+//        &[32, 64, 128, 256, 4096, 50_400_000],
+//        |p| cases::evm::fib_iterative_unchecked(p),
+//        |p| cases::polkavm::fib_iterative_unchecked(p),
+//    );
+//}
 
 fn bench_baseline(c: &mut Criterion) {
     bench(
@@ -131,7 +131,7 @@ criterion_group!(
     bench_triangle_number,
     bench_fibonacci_recurisve,
     bench_fibonacci_iterative,
-    bench_fibonacci_iterative_unchecked,
+    //bench_fibonacci_iterative_unchecked,
     bench_fibonacci_binet
 );
 criterion_main!(execute);

@@ -653,7 +653,7 @@ checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
 [[package]]
 name = "era-compiler-llvm-context"
 version = "1.4.1"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "anyhow",
  "hex",
@@ -1082,7 +1082,7 @@ checksum = "01cda141df6706de531b6c46c3a33ecca755538219bd484262fa09410c13539c"
 [[package]]
 name = "lld-sys"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "cc",
  "libc",
@@ -1229,7 +1229,7 @@ checksum = "0ab1bc2a289d34bd04a330323ac98a1b4bc82c9d9fcb1e66b63caa84da26b575"
 [[package]]
 name = "pallet-contracts-pvm-llapi"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "inkwell",
 ]
@@ -1600,12 +1600,12 @@ checksum = "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
 [[package]]
 name = "revive-builtins"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 
 [[package]]
 name = "revive-common"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "anyhow",
  "serde",
@@ -1616,7 +1616,7 @@ dependencies = [
 [[package]]
 name = "revive-integration"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "alloy-primitives",
  "env_logger",
@@ -1630,7 +1630,7 @@ dependencies = [
 [[package]]
 name = "revive-linker"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "anyhow",
  "inkwell",
@@ -1645,7 +1645,7 @@ dependencies = [
 [[package]]
 name = "revive-solidity"
 version = "1.4.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "anyhow",
  "colored",
@@ -1673,7 +1673,7 @@ dependencies = [
 [[package]]
 name = "revive-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#8a6d43bcd3eb5af8a618ee0c7e9751aa1b1b5718"
+source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
 dependencies = [
  "inkwell",
 ]

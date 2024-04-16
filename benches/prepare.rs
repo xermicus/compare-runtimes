@@ -81,14 +81,14 @@ fn bench_fibonacci_iterative(c: &mut Criterion) {
     );
 }
 
-fn bench_fibonacci_iterative_unchecked(c: &mut Criterion) {
-    bench(
-        c,
-        "FibonacciIterativeUnchecked",
-        cases::evm::fib_iterative_unchecked(0),
-        cases::polkavm::fib_iterative_unchecked(0),
-    );
-}
+//fn bench_fibonacci_iterative_unchecked(c: &mut Criterion) {
+//    bench(
+//        c,
+//        "FibonacciIterativeUnchecked",
+//        cases::evm::fib_iterative_unchecked(0),
+//        cases::polkavm::fib_iterative_unchecked(0),
+//    );
+//}
 
 fn bench_fibonacci_binet(c: &mut Criterion) {
     bench(
@@ -111,7 +111,7 @@ criterion_group!(
     bench_triangle_number,
     bench_fibonacci_recursive,
     bench_fibonacci_iterative,
-    bench_fibonacci_iterative_unchecked,
+    //bench_fibonacci_iterative_unchecked,
     bench_fibonacci_binet,
     bench_erc20
 );
