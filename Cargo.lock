@@ -653,7 +653,7 @@ checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
 [[package]]
 name = "era-compiler-llvm-context"
 version = "1.4.1"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "anyhow",
  "hex",
@@ -1082,7 +1082,7 @@ checksum = "01cda141df6706de531b6c46c3a33ecca755538219bd484262fa09410c13539c"
 [[package]]
 name = "lld-sys"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "cc",
  "libc",
@@ -1229,7 +1229,7 @@ checksum = "0ab1bc2a289d34bd04a330323ac98a1b4bc82c9d9fcb1e66b63caa84da26b575"
 [[package]]
 name = "pallet-contracts-pvm-llapi"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "inkwell",
 ]
@@ -1433,9 +1433,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.80"
+version = "1.0.81"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a56dea16b0a29e94408b9aa5e2940a4eedbd128a1ba20e8f7ae60fd3d465af0e"
+checksum = "3d1597b0c024618f09a9c3b8655b7e430397a36d23fdafec26d6965e9eec3eba"
 dependencies = [
  "unicode-ident",
 ]
@@ -1600,12 +1600,12 @@ checksum = "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
 [[package]]
 name = "revive-builtins"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 
 [[package]]
 name = "revive-common"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "anyhow",
  "serde",
@@ -1616,7 +1616,7 @@ dependencies = [
 [[package]]
 name = "revive-integration"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "alloy-primitives",
  "env_logger",
@@ -1630,7 +1630,7 @@ dependencies = [
 [[package]]
 name = "revive-linker"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "anyhow",
  "inkwell",
@@ -1645,7 +1645,7 @@ dependencies = [
 [[package]]
 name = "revive-solidity"
 version = "1.4.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "anyhow",
  "colored",
@@ -1673,7 +1673,7 @@ dependencies = [
 [[package]]
 name = "revive-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/xermicus/revive#796d0c19bb200470d4a2c39381df0b016bc51d5d"
+source = "git+https://github.com/xermicus/revive#09b905415bb06ccc79debceec35cef16c2753cae"
 dependencies = [
  "inkwell",
 ]
@@ -1872,18 +1872,18 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.197"
+version = "1.0.198"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3fb1c873e1b9b056a4dc4c0c198b24c3ffa059243875552b2bd0933b1aee4ce2"
+checksum = "9846a40c979031340571da2545a4e5b7c4163bdae79b301d5f86d03979451fcc"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.197"
+version = "1.0.198"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7eb0b34b42edc17f6b7cac84a52a1c5f0e1bb2227e997ca9011ea3dd34e8610b"
+checksum = "e88edab869b01783ba905e7d0153f9fc1a6505a96e4ad3018011eedb838566d9"
 dependencies = [
  "proc-macro2",
  "quote",

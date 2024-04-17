@@ -1,7 +1,7 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use polkavm::BackendKind;
 
-use compare_runtimes::*;
+use compare_runtimes::{runtimes::polkavm::instantiate_engine, *};
 
 fn bench(
     c: &mut Criterion,
@@ -10,36 +10,73 @@ fn bench(
     input_pvm: (Vec<u8>, Vec<u8>),
 ) {
     let mut group = c.benchmark_group(group_name);
-
-    group.bench_with_input(BenchmarkId::new("PrepareEvm", 0), &input_evm, |b, (code, data)| {
-        b.iter(|| runtimes::evm::prepare(code.clone(), data.clone()))
-    });
+    let code_size = input_pvm.0.len();
 
     group.bench_with_input(
-        BenchmarkId::new("PreparePolkaVMInterpreter", 0),
-        &input_pvm,
-        |b, (code, data)| {
-            b.iter(|| {
-                runtimes::polkavm::prepare_pvm(code, data, BackendKind::Interpreter);
-            });
-        },
+        BenchmarkId::new("Evm", code_size),
+        &input_evm,
+        |b, (code, data)| b.iter(|| runtimes::evm::prepare(code.clone(), data.clone())),
     );
 
-    group.bench_with_input(
-        BenchmarkId::new("PreparePolkaVM", 0),
-        &input_pvm,
-        |b, (code, data)| {
-            b.iter(|| {
-                runtimes::polkavm::prepare_pvm(code, data, BackendKind::Compiler);
-            });
-        },
-    );
+    {
+        let engine = instantiate_engine(BackendKind::Interpreter);
+        group.bench_with_input(
+            BenchmarkId::new("PvmInterpreterCompile", code_size),
+            &(&input_pvm.0, engine),
+            |b, (code, engine)| {
+                b.iter(|| {
+                    revive_integration::mock_runtime::recompile_code(code, &engine);
+                });
+            },
+        );
+    }
+
+    {
+        let engine = instantiate_engine(BackendKind::Compiler);
+        group.bench_with_input(
+            BenchmarkId::new("PvmCompile", code_size),
+            &(&input_pvm.0, engine),
+            |b, (code, engine)| {
+                b.iter(|| {
+                    revive_integration::mock_runtime::recompile_code(code, engine);
+                });
+            },
+        );
+    }
+
+    {
+        let engine = instantiate_engine(BackendKind::Interpreter);
+        let module = revive_integration::mock_runtime::recompile_code(&input_pvm.0, &engine);
+        group.bench_with_input(
+            BenchmarkId::new("PvmInterpreterInstantiate", code_size),
+            &(module, engine),
+            |b, (module, engine)| {
+                b.iter(|| {
+                    revive_integration::mock_runtime::instantiate_module(module, engine);
+                });
+            },
+        );
+    }
+
+    {
+        let engine = instantiate_engine(BackendKind::Compiler);
+        let module = revive_integration::mock_runtime::recompile_code(&input_pvm.0, &engine);
+        group.bench_with_input(
+            BenchmarkId::new("PvmInstantiate", code_size),
+            &(module, engine),
+            |b, (module, engine)| {
+                b.iter(|| {
+                    revive_integration::mock_runtime::instantiate_module(module, engine);
+                });
+            },
+        );
+    }
 }
 
 fn bench_baseline(c: &mut Criterion) {
     bench(
         c,
-        "Baseline",
+        "PrepareBaseline",
         cases::evm::baseline(),
         cases::polkavm::baseline(),
     );
@@ -48,7 +85,7 @@ fn bench_baseline(c: &mut Criterion) {
 fn bench_odd_product(c: &mut Criterion) {
     bench(
         c,
-        "OddProduct",
+        "PrepareOddProduct",
         cases::evm::odd_product(0),
         cases::polkavm::odd_product(0),
     );
@@ -57,7 +94,7 @@ fn bench_odd_product(c: &mut Criterion) {
 fn bench_triangle_number(c: &mut Criterion) {
     bench(
         c,
-        "TriangleNumber",
+        "PrepareTriangleNumber",
         cases::evm::triangle_number(0),
         cases::polkavm::triangle_number(0),
     );
@@ -66,7 +103,7 @@ fn bench_triangle_number(c: &mut Criterion) {
 fn bench_fibonacci_recursive(c: &mut Criterion) {
     bench(
         c,
-        "FibonacciRecursive",
+        "PrepareFibonacciRecursive",
         cases::evm::fib_recursive(0),
         cases::polkavm::fib_recursive(0),
     );
@@ -75,7 +112,7 @@ fn bench_fibonacci_recursive(c: &mut Criterion) {
 fn bench_fibonacci_iterative(c: &mut Criterion) {
     bench(
         c,
-        "FibonacciIterative",
+        "PrepareFibonacciIterative",
         cases::evm::fib_iterative(0),
         cases::polkavm::fib_iterative(0),
     );
@@ -93,14 +130,19 @@ fn bench_fibonacci_iterative(c: &mut Criterion) {
 fn bench_fibonacci_binet(c: &mut Criterion) {
     bench(
         c,
-        "FibonacciBinet",
+        "PrepareFibonacciBinet",
         cases::evm::fib_binet(0),
         cases::polkavm::fib_binet(0),
     );
 }
 
 fn bench_erc20(c: &mut Criterion) {
-    bench(c, "ERC20", cases::evm::erc20(), cases::polkavm::erc20());
+    bench(
+        c,
+        "PrepareERC20",
+        cases::evm::erc20(),
+        cases::polkavm::erc20(),
+    );
 }
 
 criterion_group!(
