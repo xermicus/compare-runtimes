@@ -127,6 +127,16 @@ mod tests {
                 polkavm_input,
             );
 
+            let (evm_code, evm_input) = cases::evm::fib_iterative_unchecked(n);
+            let (polkavm_code, polkavm_input) = cases::polkavm::fib_iterative_unchecked(n);
+            check(
+                expected,
+                evm_code,
+                evm_input.clone(),
+                polkavm_code,
+                polkavm_input,
+            );
+
             let (evm_code, evm_input) = cases::evm::fib_binet(n);
             let (polkavm_code, polkavm_input) = cases::polkavm::fib_binet(n);
             check(
